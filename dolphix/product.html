@@ -1,0 +1,181 @@
+/* live chat code when php is working*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat - Real-Time</title>
+    <style>
+        /* Basic styles for chat */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f4f4f9;
+        }
+        .chat-container {
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .chat-message {
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .chat-message.user {
+            background: #007BFF;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-message.other {
+            background: #e5e5e5;
+            color: #333;
+            align-self: flex-start;
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        .chat-input button {
+            padding: 10px 20px;
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:8080/chat');
+        const chatBox = document.getElementById('chat-box');
+        const messageInput = document.getElementById('message-input');
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        ws.onmessage = (event) => {
+            const message = event.data;
+
+            // Display incoming messages
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message other';
+            messageDiv.textContent = message;
+            chatBox.appendChild(messageDiv);
+
+            // Scroll to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+
+            if (message) {
+                // Send the message to the WebSocket server
+                ws.send(message);
+
+                // Display the message locally
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message user';
+                messageDiv.textContent = message;
+                chatBox.appendChild(messageDiv);
+
+                // Clear input and scroll to the bottom
+                messageInput.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
+
+/* hph */ 
+<?php
+require 'vendor/autoload.php';
+
+use Ratchet\MessageComponentInterface;
+use Ratchet\ConnectionInterface;
+
+class Chat implements MessageComponentInterface {
+    private $clients;
+
+    public function __construct() {
+        $this->clients = new \SplObjectStorage;
+    }
+
+    public function onOpen(ConnectionInterface $conn) {
+        $this->clients->attach($conn);
+        echo "New connection! ({$conn->resourceId})\n";
+    }
+
+    public function onMessage(ConnectionInterface $from, $msg) {
+        $numRecv = count($this->clients) - 1;
+        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+
+        foreach ($this->clients as $client) {
+            if ($from !== $client) {
+                $client->send($msg);
+            }
+        }
+    }
+
+    public function onClose(ConnectionInterface $conn) {
+        $this->clients->detach($conn);
+        echo "Connection {$conn->resourceId} has disconnected\n";
+    }
+
+    public function onError(ConnectionInterface $conn, \Exception $e) {
+        echo "An error has occurred: {$e->getMessage()}\n";
+        $conn->close();
+    }
+}
+
+use Ratchet\App;
+
+// Create and run the WebSocket server
+$server = new Ratchet\App('localhost', 8080, '0.0.0.0');
+$server->route('/chat', new Chat, ['*']);
+$server->run();
+
+
+
+

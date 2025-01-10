@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="image/favicon.ico">
+    <title>DOLPHIX</title>
+    <link rel="stylesheet" href="laptop.css">
+    
+</head>
+<body>
+    <header id="navbar">
+        <div class="logo"><a href="about.html">D
+            <img src="image/favicon.ico" style="border-radius: 20px; ">LPHIX GROUP</a></div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." class="input">
+            <button id="Search" onclick="searchFunction()">Search</button>
+            <button class="mode-toggle" onclick="toggleMode()">Dark/Light</button>
+        </div>
+        <div class="link">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li>
+                    <a href="#">PRODUCT</a>
+                    <div class="dropdown">
+                        <a href="gaming.html">GAMING CENTER</a>
+                        <a href="laptop.html">LAPTOP & TABLETS </a>
+                        <a href="printer.html">PRINTER</a>
+                        <a href="ups.html">UPS</a>
+                        <a href="#">MAINTENANCE FACILITY</a>
+                    </div>
+                </li>
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="livechat.html"><button type="submit" id="liveChatButton">LIVECHAT</button></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="title"><h1>SMART DEVICES</h1></div>
+    <h1 class="head">NOTEBOOKS</h1>
+
+    <main id="product">
+        
+        <div>
+            <a href="#"><img src="image/pic-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>LAPTOPP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/hp lap.jpg" alt="Gaming Laptop"></a>
+            <p> LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/leno-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p> LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/pc-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p> LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/pc-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+    </main>
+    <h1 class="head"> DESKTOP</h1>
+    <main id="product">
+       
+        <div>
+            <a href="#"><img src="image/hp case-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/hp case-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/hp case-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/hp case-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/hp case-Photoroom.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+    </main>
+
+
+    <h1 class="head">ACCESSORIES</h1>
+    <main id="product">
+       
+        <div>
+            <a href="#"><img src="image/UPS RO.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/UPS RO.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/UPS RO.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/UPS RO.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+        <div>
+            <a href="#"><img src="image/UPS RO.jpg" alt="Gaming Laptop"></a>
+            <p>GAMING LAPTOP</p>
+            <a href="#">GET MORE INFO</a>
+        </div>
+    </main>
+
+        
+    <footer id="end">
+        <div class="bottom_link">
+            <a href="#">Back To Top</a>
+        </div>
+        <div class="socialMedia">
+            <a href="https://www.youtube.com/watch?v=qJQJ1_1u-cQ" target="_blank"><img src="image/yut-Photoroom.jpg" alt="Youtube" width="30px"></a>
+            <a href="#"><img src="image/what-Photoroom.jpg" alt="WhatApp" width="30px"></a>
+            <a href="#"><img src="image/inst-Photoroom.jpg" alt="Instagram" width="30px"></a>
+        </div>
+        <div class="para">
+            <p>&copy; 2024 Gaming Team. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script>
+        function searchFunction() {
+            const searchInput = document.querySelector('.search-bar input');
+            alert('You searched for: ' + searchInput.value);
+        }
+
+        // Apply saved mode on page load
+    window.onload = function () {
+        const savedMode = localStorage.getItem('darkMode');
+        if (savedMode === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    };
+
+    // Toggle mode and save preference
+    function toggleMode() {
+        const isDarkMode = document.body.classList.toggle('dark-mode');
+        if (isDarkMode) {
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    }
+
+    </script>
+</body>
+</html>
